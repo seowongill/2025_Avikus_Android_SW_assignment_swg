@@ -20,16 +20,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             Androidassignment2025Theme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    MainScreen(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
     }
 }
-
+/*
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -44,4 +41,4 @@ fun GreetingPreview() {
     Androidassignment2025Theme {
         Greeting("Android")
     }
-}
+}*/
