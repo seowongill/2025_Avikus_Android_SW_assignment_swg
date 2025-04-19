@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
@@ -28,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = viewModel()) {
     val boatStatus by viewModel.boatStatus.collectAsStateWithLifecycle()
     var selectedUnit by remember { mutableStateOf("knots") }
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 
     Column(
         modifier = modifier
@@ -36,10 +38,16 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = viewMod
     ) {
         boatStatus?.let { status ->
             if (!status.location.latitude.isNaN() && !status.location.longitude.isNaN()) {
-                Text("위도: ${status.location.latitude}")
-                Text("경도: ${status.location.longitude}")
+                Text("위도: ${status.location.latitude}",
+                    color = textColor
+                )
+                Text("경도: ${status.location.longitude}",
+                    color = textColor
+                )
             } else {
-                Text("위치 정보 없음")
+                Text("위치 정보 없음",
+                    color = textColor
+                )
             }
 
             if (!status.speed.isNaN()) {
@@ -47,24 +55,34 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = viewMod
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text("속도: ${convertSpeed(status.speed, selectedUnit)}")
+                    Text("속도: ${convertSpeed(status.speed, selectedUnit)}",
+                        color = textColor
+                    )
                     SpeedDropdownMenu(
                         selected = selectedUnit,
                         onUnitSelected = { selectedUnit = it }
                     )
                 }
             } else {
-                Text("속도 정보 없음")
+                Text("속도 정보 없음",
+                    color = textColor
+                )
             }
 
             if (!status.heading.isNaN()) {
-                Text("Heading: ${status.heading}°")
+                Text("Heading: ${status.heading}°",
+                    color = textColor
+                )
                 Compass(heading = status.heading)
             } else {
-                Text("방향 정보 없음")
+                Text("방향 정보 없음",
+                    color = textColor
+                )
             }
         } ?: run {
-            Text("Loading boat status...")
+            Text("Loading boat status...",
+                color = textColor
+            )
         }
     }
 }
@@ -76,6 +94,7 @@ fun SpeedDropdownMenu(
 ) {
     var expandStatus by remember { mutableStateOf(false) }
     val options = listOf("knots", "mph", "kmp")
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 
     Box(
         modifier = Modifier
@@ -85,6 +104,7 @@ fun SpeedDropdownMenu(
     ) {
         Text(
             text = selected,
+            color = textColor
         )
 
         DropdownMenu(
@@ -93,7 +113,9 @@ fun SpeedDropdownMenu(
         ) {
             options.forEach { option ->
                 DropdownMenuItem(
-                    text = { Text(option) },
+                    text = { Text(option,
+                        color = textColor
+                    ) },
                     onClick = {
                         onUnitSelected(option)
                         expandStatus = false
@@ -109,6 +131,7 @@ fun Compass(heading: Float, modifier: Modifier = Modifier) {
     val targetHeading by animateFloatAsState(
         targetValue = heading,
     )
+    val textColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     Column(modifier = Modifier
         .padding(vertical = 5.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -116,7 +139,8 @@ fun Compass(heading: Float, modifier: Modifier = Modifier) {
     ){
         Text(
             text = "N",
-            color = Color.Black,
+            //color = Color.Black,
+            color = textColor,
             fontSize = 20.sp
         )
         Row(
@@ -125,7 +149,8 @@ fun Compass(heading: Float, modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = "W",
-                color = Color.Black,
+                //color = Color.Black,
+                color = textColor,
                 fontSize = 20.sp
             )
             Box(
@@ -161,13 +186,15 @@ fun Compass(heading: Float, modifier: Modifier = Modifier) {
             }
             Text(
                 text = "E",
-                color = Color.Black,
+                //color = Color.Black,
+                color = textColor,
                 fontSize = 20.sp
             )
         }
         Text(
             text = "S",
-            color = Color.Black,
+            //color = Color.Black,
+            color = textColor,
             fontSize = 20.sp
         )
     }
