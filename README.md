@@ -81,3 +81,4 @@
 ## 6. 참고 사항
    - 나침반 바늘을 표현하기위해 res/drawable 경로에 direction.png 파일을 추가하였습니다.
    - 나침반의 background color에 사용되는 color 값 "CompassBackground"를 제공해주신 color.kt에 추가하였습니다.
+   - 시스템 모드(라이트 모드 / 다크 모드)에 따라 텍스트 색상을 검정색 / 흰색으로 표시되도록 수정하였습니다. (0419 추가)
